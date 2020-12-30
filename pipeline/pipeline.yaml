@@ -29,7 +29,7 @@ Parameters:
     GithubUser:
       Description: Github user where the repository lives
       Type: AWS::SSM::Parameter::Value<String>
-      Default: /service/aws-sam-pipeline-offer-offer/github/user
+      Default: /service/aws-sam-pipeline-offer/github/user
 
 
 Resources:
