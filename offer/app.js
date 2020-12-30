@@ -38,7 +38,7 @@ exports.addOffer = async (event) => {
 	const price = dynamodb.NewImage.price.N;
 
 	const formData = {
-		offer : dynamodb.NewImage.user.S,
+		user : dynamodb.NewImage.user.S,
 		message: "You have an offer"
 	}
 	
@@ -48,6 +48,7 @@ exports.addOffer = async (event) => {
 };
 
 function saveOffer(event) {
+	console.log(event);
 	const offer = JSON.parse(event);
 	offer.offerId = Math.floor(100000 + Math.random() * 900000).toString();
 
