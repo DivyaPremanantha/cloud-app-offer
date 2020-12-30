@@ -48,7 +48,7 @@ exports.addOffer = async (event) => {
 };
 
 function saveOffer(event) {
-	const offer = JSON.parse(event.body);
+	const offer = JSON.parse(event);
 	offer.offerId = Math.floor(100000 + Math.random() * 900000).toString();
 
 	return databaseManager.saveOffer(offer).then(response => {
