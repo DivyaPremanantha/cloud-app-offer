@@ -18,6 +18,11 @@ Parameters:
       - staging
       - prod
     Description: Environment of this stack of resources
+  
+  PaymentDBTableStreamARN:
+    Description: My SSM Value
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: PaymentDBTableStreamARN
 
 Mappings:
   ResourcesName:
@@ -61,6 +66,20 @@ Resources:
             Method: ANY
             RestApiId: !Ref OfferApi
 
+  addOfferFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: app.addOffer
+      Runtime: nodejs12.x
+      CodeUri: notification/
+      Events:
+        Stream:
+          Type: DynamoDB
+          Properties:
+            Stream: !Ref PaymentDBTableStreamARN
+            BatchSize: 1
+            StartingPosition: LATEST
+  
   OfferTable:
     Type: AWS::DynamoDB::Table
     Properties:

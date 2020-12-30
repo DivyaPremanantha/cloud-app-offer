@@ -1,6 +1,7 @@
 // const axios = require('axios')
 // const url = 'http://checkip.amazonaws.com/';
 const databaseManager = require('./databaseManager');
+const { v4: uuidv4 } = require('uuid');
 /**
  *
  * Event doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
@@ -31,9 +32,19 @@ exports.offerHandler = async (event) => {
 	}
 };
 
+exports.addOffer = async (event) => {
+	console.log(event);
+	const dynamodb = event.Records[0].dynamodb;
+    console.log(dynamodb);
+	const price = dynamodb.NewImage.price.N;
+	if (price > 200) {
+		return saveOffer(event);
+	}
+};
+
 function saveOffer(event) {
 	const offer = JSON.parse(event.body);
-	offer.offerId = Math.floor(100000 + Math.random() * 900000).toString();
+	offer.offerId = uuidv4();
 
 	return databaseManager.saveOffer(offer).then(response => {
 		console.log(response);
