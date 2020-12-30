@@ -65,8 +65,8 @@ Resources:
             Path: /offer/{offerId}
             Method: ANY
             RestApiId: !Ref OfferApi
-
-  AddOfferFunction:
+  
+  AddOffer:
     Type: 'AWS::Serverless::Function'
     Properties:
       Handler: app.addOffer
