@@ -37,7 +37,7 @@ exports.addOffer = async (event) => {
     console.log(dynamodb);
 	const price = dynamodb.NewImage.price.N;
 
-	const formData = '{ user:' + dynamodb.NewImage.user.S + ', message: "You have an offer" }'
+	const formData = '{ "user": "' + dynamodb.NewImage.user.S + '", "message": "You have an offer" }'
 	
 	if (price > 200) {
 		return saveOffer(formData);
