@@ -1,0 +1,90 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  sam-app
+
+  Sample SAM Template for sam-app
+  
+Globals:
+  Function:
+    Timeout: 3
+
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - staging
+      - prod
+    Description: Environment of this stack of resources
+
+Mappings:
+  ResourcesName:
+    dev:
+      tableName: Offer-dev
+    staging:
+      tableName: Offer-staging
+    prod:
+      tableName: Offer-prod
+
+Resources:
+  OfferApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: !Ref Environment
+      TracingEnabled: true
+
+  Offer:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.offerHandler
+      Runtime: nodejs12.x
+      CodeUri: offer/
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !FindInMap [ResourcesName, !Ref Environment, tableName]
+      Environment:
+        Variables:
+          TABLE_NAME: !FindInMap [ResourcesName, !Ref Environment, tableName]
+      Events:
+        CreateOfferAPI:
+          Type: Api
+          Properties:
+            Path: /offer
+            Method: POST
+            RestApiId: !Ref OfferApi
+        UpdateOfferAPI:
+          Type: Api
+          Properties:
+            Path: /offer/{offerId}
+            Method: ANY
+            RestApiId: !Ref OfferApi
+
+  OfferTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !FindInMap [ResourcesName, !Ref Environment, tableName]
+      AttributeDefinitions:
+        - AttributeName: offerId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: offerId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      StreamSpecification:
+          StreamViewType: NEW_IMAGE
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  OfferApi:
+    Description: "API Gateway endpoint URL for ${Environment} stage for Offer Trip function"
+    Value: !Sub "https://${OfferApi}.execute-api.${AWS::Region}.amazonaws.com/${Environment}/offer/"
+  Offer:
+    Description: "Offer Trip Lambda Function ARN"
+    Value: !GetAtt Offer.Arn
+  OfferIamRole:
+    Description: "Implicit IAM Role created for Offer Trip function"
+    Value: !GetAtt OfferRole.Arn
