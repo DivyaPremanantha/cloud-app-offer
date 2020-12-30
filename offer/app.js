@@ -38,7 +38,7 @@ exports.addOffer = async (event) => {
 	const price = dynamodb.NewImage.price.N;
 
 	const formData = {
-		"user" : dynamodb.NewImage.user.S,
+		"user": dynamodb.NewImage.user.S,
 		"message": "You have an offer"
 	}
 	
