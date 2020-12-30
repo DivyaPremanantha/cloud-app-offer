@@ -72,6 +72,12 @@ Resources:
       Handler: app.addOffer
       Runtime: nodejs12.x
       CodeUri: offer/
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !FindInMap [ResourcesName, !Ref Environment, tableName]
+      Environment:
+        Variables:
+          TABLE_NAME: !FindInMap [ResourcesName, !Ref Environment, tableName]
       Events:
         Stream:
           Type: DynamoDB
