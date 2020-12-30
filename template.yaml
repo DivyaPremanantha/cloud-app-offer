@@ -71,7 +71,7 @@ Resources:
     Properties:
       Handler: app.addOffer
       Runtime: nodejs12.x
-      CodeUri: notification/
+      CodeUri: offer/
       Events:
         Stream:
           Type: DynamoDB
