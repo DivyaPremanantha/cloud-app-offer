@@ -37,7 +37,7 @@ exports.addOffer = async (event, context) => {
 
 	const formData = '{ "customerId": "' + dynamodb.NewImage.customerId.S + '", "customerName": "' + dynamodb.NewImage.customerName.S + '", "message": "You have 10% off for the next ride" }'
 	
-	if (fare > 200) {
+	if (fare > 1000) {
 		return saveOffer(formData, context);
 	}
 };
