@@ -38,13 +38,18 @@ exports.addOffer = async (event) => {
 	const formData = '{ "customerId": "' + dynamodb.NewImage.customerId.S + '", "customerName": "' + dynamodb.NewImage.customerName.S + '", "message": "You have 10% off for the next ride" }'
 	
 	if (fare > 200) {
-		return saveOffer(formData);
+		return saveOffer(formData, "addOffer");
 	}
 };
 
 function saveOffer(event, context) {
 	console.log(event);
-	const offer = JSON.parse(event);
+	var offer;
+	if (context == "addOffer") { 
+		offer = JSON.parse(event);
+	} else {
+		offer = JSON.parse(event.body);
+	}
 	offer.offerId = context.awsRequestId;
 
 	return databaseManager.saveOffer(offer).then(response => {
