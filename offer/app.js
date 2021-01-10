@@ -46,7 +46,6 @@ function saveOffer(event, context) {
 	console.log(event);
 	const offer = JSON.parse(event);
 	offer.offerId = context.awsRequestId;
-	offer.customerId = event.requestContext.authorizer.claims.sub;
 
 	return databaseManager.saveOffer(offer).then(response => {
 		console.log(response);
