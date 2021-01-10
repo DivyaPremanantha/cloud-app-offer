@@ -33,11 +33,11 @@ exports.addOffer = async (event) => {
 	console.log(event);
 	const dynamodb = event.Records[0].dynamodb;
     console.log(dynamodb);
-	const price = dynamodb.NewImage.price.N;
+	const fare = dynamodb.NewImage.fare.N;
 
 	const formData = '{ "customerId": "' + dynamodb.NewImage.customerId.S + '", "customerName": "' + dynamodb.NewImage.customerName.S + '", "message": "You have 10% off for the next ride" }'
 	
-	if (price > 200) {
+	if (fare > 200) {
 		return saveOffer(formData);
 	}
 };
