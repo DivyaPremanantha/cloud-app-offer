@@ -12,7 +12,7 @@ const databaseManager = require('./databaseManager');
  * 
  */
 
-exports.offerHandler = async (event) => {
+exports.offerHandler = async (event, context) => {
 	console.log(event);
 
 	switch (event.httpMethod) {
@@ -29,7 +29,7 @@ exports.offerHandler = async (event) => {
 	}
 };
 
-exports.addOffer = async (event) => {
+exports.addOffer = async (event, context) => {
 	console.log(event);
 	const dynamodb = event.Records[0].dynamodb;
     console.log(dynamodb);
@@ -45,7 +45,7 @@ exports.addOffer = async (event) => {
 function saveOffer(event, context) {
 	console.log(event);
 	var offer;
-	
+
 	if (event.body == undefined) { 
 		offer = JSON.parse(event);
 	} else {
