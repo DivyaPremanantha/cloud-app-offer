@@ -21,7 +21,7 @@ exports.offerHandler = async (event) => {
 		case 'DELETE':
 			return deleteOffer(event);
 		case 'GET':
-			return getOffer(event);
+			return getOffer(event, context);
 		case 'POST':
 			return saveOffer(event);
 		case 'PUT':
@@ -37,17 +37,18 @@ exports.addOffer = async (event) => {
     console.log(dynamodb);
 	const price = dynamodb.NewImage.price.N;
 
-	const formData = '{ "user": "' + dynamodb.NewImage.user.S + '", "message": "You have an offer" }'
+	const formData = '{ "customerId": "' + dynamodb.NewImage.customerId.S + '", "customerName": "' + dynamodb.NewImage.customerName.S + '", "message": "You have 10% off for the next ride" }'
 	
 	if (price > 200) {
 		return saveOffer(formData);
 	}
 };
 
-function saveOffer(event) {
+function saveOffer(event, context) {
 	console.log(event);
 	const offer = JSON.parse(event);
-	offer.offerId = Math.floor(100000 + Math.random() * 900000).toString();
+	offer.offerId = context.awsRequestId;
+	offer.customerId = event.requestContext.authorizer.claims.sub;
 
 	return databaseManager.saveOffer(offer).then(response => {
 		console.log(response);

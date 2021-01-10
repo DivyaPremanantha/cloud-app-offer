@@ -27,11 +27,14 @@ Parameters:
 Mappings:
   ResourcesName:
     dev:
-      tableName: Offer-dev
+      tableName: OfferDev
+      arn: UserPoolArnDev
     staging:
-      tableName: Offer-staging
+      tableName: OfferStaging
+      arn: UserPoolArnStaging
     prod:
-      tableName: Offer-prod
+      tableName: OfferProd
+      arn: UserPoolArnProd
 
 Resources:
   OfferApi:
@@ -39,6 +42,13 @@ Resources:
     Properties:
       StageName: !Ref Environment
       TracingEnabled: true
+      Cors: "'*'"
+      Auth:
+        DefaultAuthorizer: MyCognitoAuthorizer
+        Authorizers:
+          MyCognitoAuthorizer:
+            UserPoolArn: 
+              Fn::ImportValue: !FindInMap [ResourcesName, !Ref Environment, arn]
 
   Offer:
     Type: AWS::Serverless::Function
