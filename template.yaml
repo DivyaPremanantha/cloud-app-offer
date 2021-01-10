@@ -28,12 +28,15 @@ Mappings:
   ResourcesName:
     dev:
       tableName: OfferDev
+      paymentArn: PaymentDevArn
       arn: UserPoolArnDev
     staging:
       tableName: OfferStaging
+      paymentArn: PaymentStagingArn
       arn: UserPoolArnStaging
     prod:
       tableName: OfferProd
+      paymentArn: PaymentProdArn
       arn: UserPoolArnProd
 
 Resources:
@@ -92,7 +95,8 @@ Resources:
         Stream:
           Type: DynamoDB
           Properties:
-            Stream: !Ref PaymentDBTableStreamARN
+            Stream:               
+              Fn::ImportValue: !FindInMap [ResourcesName, !Ref Environment, paymentArn]
             BatchSize: 1
             StartingPosition: LATEST
   
