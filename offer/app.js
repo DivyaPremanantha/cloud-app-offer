@@ -19,9 +19,9 @@ exports.offerHandler = async (event) => {
 		case 'DELETE':
 			return deleteOffer(event);
 		case 'GET':
-			return getOffer(event, context);
+			return getOffer(event);
 		case 'POST':
-			return saveOffer(event);
+			return saveOffer(event, context);
 		case 'PUT':
 			return updateOffer(event);
 		default:
@@ -38,14 +38,15 @@ exports.addOffer = async (event) => {
 	const formData = '{ "customerId": "' + dynamodb.NewImage.customerId.S + '", "customerName": "' + dynamodb.NewImage.customerName.S + '", "message": "You have 10% off for the next ride" }'
 	
 	if (fare > 200) {
-		return saveOffer(formData, "addOffer");
+		return saveOffer(formData, context);
 	}
 };
 
 function saveOffer(event, context) {
 	console.log(event);
 	var offer;
-	if (context == "addOffer") { 
+	
+	if (event.body == undefined) { 
 		offer = JSON.parse(event);
 	} else {
 		offer = JSON.parse(event.body);
