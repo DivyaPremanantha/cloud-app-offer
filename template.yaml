@@ -24,14 +24,17 @@ Mappings:
   ResourcesName:
     dev:
       tableName: OfferDev
+      tableNameArn: OfferDevArn
       paymentArn: PaymentDevArn
       arn: UserPoolArnDev
     staging:
       tableName: OfferStaging
+      tableNameArn: OfferStagingArn
       paymentArn: PaymentStagingArn
       arn: UserPoolArnStaging
     prod:
       tableName: OfferProd
+      tableNameArn: OfferProdArn
       paymentArn: PaymentProdArn
       arn: UserPoolArnProd
 
@@ -120,6 +123,11 @@ Outputs:
   Offer:
     Description: "Offer Trip Lambda Function ARN"
     Value: !GetAtt Offer.Arn
+  OfferTableStream:
+    Description: "Booking Trip Dynamo DB Table Stream"
+    Value: !GetAtt OfferTable.StreamArn
+    Export: 
+      Name: !FindInMap [ResourcesName, !Ref Environment, tableNameArn]
   OfferIamRole:
     Description: "Implicit IAM Role created for Offer Trip function"
     Value: !GetAtt OfferRole.Arn
