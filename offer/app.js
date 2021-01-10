@@ -1,5 +1,3 @@
-// const axios = require('axios')
-// const url = 'http://checkip.amazonaws.com/';
 const databaseManager = require('./databaseManager');
 /**
  *
