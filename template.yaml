@@ -14,11 +14,6 @@ Parameters:
       - staging
       - prod
     Description: Environment of this stack of resources
-  
-  PaymentDBTableStreamARN:
-    Description: My SSM Value
-    Type: AWS::SSM::Parameter::Value<String>
-    Default: PaymentDBTableStreamARN
 
 Mappings:
   ResourcesName:
