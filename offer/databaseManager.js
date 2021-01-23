@@ -35,6 +35,8 @@ module.exports.getOffer = offerId => {
 		.get(params)
 		.promise()
 		.then(result => {
+			console.log("*****");
+			console.log(result);
 			return result.Offer;
 		});
 };
