@@ -26,7 +26,7 @@ module.exports.saveOffer = offer => {
 module.exports.getOffer = offerId => {
 	const params = {
 		Key: {
-			offer: offerId
+			offerId: offerId
 		},
 		TableName: TABLE_NAME
 	};
@@ -42,7 +42,7 @@ module.exports.getOffer = offerId => {
 module.exports.deleteOffer = offerId => {
 	const params = {
 		Key: {
-			offer: offerId
+			offerId: offerId
 		},
 		TableName: TABLE_NAME
 	};
