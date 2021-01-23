@@ -37,7 +37,7 @@ module.exports.getOffer = offerId => {
 		.then(result => {
 			console.log("*****");
 			console.log(result);
-			return result.Offer;
+			return result.Item;
 		});
 };
 
