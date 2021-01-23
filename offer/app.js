@@ -61,6 +61,7 @@ function saveOffer(event, context) {
 
 function getOffer(event) {
 	const offerId = event.pathParameters.offerId;
+	console.log(offerId);
 	return databaseManager.getOffer(offerId).then(response => {
 		console.log(response);
 		return sendResponse(200, JSON.stringify(response));
